@@ -5,6 +5,7 @@ import com.example.sktest.config.jwt.JwtAuthenticationFilter;
 import com.example.sktest.config.jwt.JwtAuthorizationFilter;
 import com.example.sktest.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,18 +25,19 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final CorsConfig corsConfig;
-    private final UserRepository userRepository;
+    @Autowired
+    private CorsConfig corsConfig;
+    @Autowired
+    private UserRepository userRepository;
 
 
+    //passwordEncoder
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public BCryptPasswordEncoder encodePassword() {
         return new BCryptPasswordEncoder();
     }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable();
@@ -54,8 +56,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/admin/**")
                         .access(new WebExpressionAuthorizationManager("hasRole('ROLE_ADMIN')"))
                         .anyRequest().permitAll()
-                )
-        ;
+                );
 
         return http.build();
     }

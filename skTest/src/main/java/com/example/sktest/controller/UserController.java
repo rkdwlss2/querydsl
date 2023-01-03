@@ -40,7 +40,7 @@ public class UserController {
     @GetMapping("user")
     public String user(Authentication authentication) {
         PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
-        return "<h1>user</h1>";
+        return principal.getUser().toString();
     }
 
     // 매니저 혹은 어드민이 접근 가능

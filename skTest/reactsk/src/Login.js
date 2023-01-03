@@ -1,6 +1,6 @@
 import React from "react";
 import { GoogleLogin } from "react-google-login";
-import Axios from "axios";
+import Axios from 'axios';
 
 const config = {
     headers: {
